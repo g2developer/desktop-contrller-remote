@@ -1,0 +1,31 @@
+.connection-status {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  margin-bottom: 16px;
+}
+
+.status-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.status-indicator.connected {
+  background-color: #4CD964; /* iOS 성공 색상 */
+  box-shadow: 0 0 5px rgba(76, 217, 100, 0.5);
+}
+
+.status-indicator.disconnected {
+  background-color: #FF3B30; /* iOS 오류 색상 */
+  box-shadow: 0 0 5px rgba(255, 59, 48, 0.5);
+}
+
+.connection-status span {
+  font-size: 14px;
+  color: #1C1C1E;
+}

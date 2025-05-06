@@ -1,0 +1,126 @@
+.main-content {
+  --background: #F2F2F7; /* iOS 배경색 */
+}
+
+.welcome-container {
+  text-align: center;
+  margin-bottom: 24px;
+  padding: 24px 16px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.app-icon.main-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+  background-color: #007AFF; /* iOS 메인 색상 */
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 10px rgba(0, 122, 255, 0.3);
+}
+
+.app-icon.main-icon ion-icon {
+  font-size: 30px;
+  color: white;
+}
+
+.welcome-container h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1C1C1E;
+  margin: 0 0 10px 0;
+}
+
+.welcome-container p {
+  font-size: 16px;
+  color: #8E8E93;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.action-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.card:active {
+  transform: scale(0.98);
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+}
+
+.card-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+}
+
+.command-card .card-icon {
+  background-color: #5AC8FA; /* iOS 밝은 파란색 */
+}
+
+.response-card .card-icon {
+  background-color: #FFCC00; /* iOS 노란색 */
+}
+
+.card-icon ion-icon {
+  font-size: 24px;
+  color: white;
+}
+
+.card-info {
+  flex: 1;
+}
+
+.card-info h3 {
+  font-size: 17px;
+  font-weight: 600;
+  color: #1C1C1E;
+  margin: 0 0 4px 0;
+}
+
+.card-info p {
+  font-size: 14px;
+  color: #8E8E93;
+  margin: 0;
+}
+
+.last-command-time {
+  font-size: 12px;
+  color: #8E8E93;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.card-arrow {
+  margin-left: 12px;
+}
+
+.card-arrow ion-icon {
+  font-size: 18px;
+  color: #8E8E93;
+}

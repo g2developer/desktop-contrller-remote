@@ -1,0 +1,107 @@
+/* Ionic Variables and Theming */
+
+:root {
+  /* iOS 기본 색상 팔레트 */
+  --ion-color-primary: #007AFF;
+  --ion-color-primary-rgb: 0, 122, 255;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #006ae0;
+  --ion-color-primary-tint: #1a87ff;
+
+  --ion-color-secondary: #5AC8FA;
+  --ion-color-secondary-rgb: 90, 200, 250;
+  --ion-color-secondary-contrast: #000000;
+  --ion-color-secondary-contrast-rgb: 0, 0, 0;
+  --ion-color-secondary-shade: #4fb0dc;
+  --ion-color-secondary-tint: #6bcefb;
+
+  --ion-color-tertiary: #5856D6;
+  --ion-color-tertiary-rgb: 88, 86, 214;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #4d4cbc;
+  --ion-color-tertiary-tint: #6967da;
+
+  --ion-color-success: #4CD964;
+  --ion-color-success-rgb: 76, 217, 100;
+  --ion-color-success-contrast: #000000;
+  --ion-color-success-contrast-rgb: 0, 0, 0;
+  --ion-color-success-shade: #43bf58;
+  --ion-color-success-tint: #5edd74;
+
+  --ion-color-warning: #FFCC00;
+  --ion-color-warning-rgb: 255, 204, 0;
+  --ion-color-warning-contrast: #000000;
+  --ion-color-warning-contrast-rgb: 0, 0, 0;
+  --ion-color-warning-shade: #e0b400;
+  --ion-color-warning-tint: #ffd11a;
+
+  --ion-color-danger: #FF3B30;
+  --ion-color-danger-rgb: 255, 59, 48;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #e0342a;
+  --ion-color-danger-tint: #ff4f45;
+
+  --ion-color-dark: #1C1C1E;
+  --ion-color-dark-rgb: 28, 28, 30;
+  --ion-color-dark-contrast: #ffffff;
+  --ion-color-dark-contrast-rgb: 255, 255, 255;
+  --ion-color-dark-shade: #18191a;
+  --ion-color-dark-tint: #383a3e;
+
+  --ion-color-medium: #8E8E93;
+  --ion-color-medium-rgb: 142, 142, 147;
+  --ion-color-medium-contrast: #000000;
+  --ion-color-medium-contrast-rgb: 0, 0, 0;
+  --ion-color-medium-shade: #7d7d81;
+  --ion-color-medium-tint: #9999a0;
+
+  --ion-color-light: #F2F2F7;
+  --ion-color-light-rgb: 242, 242, 247;
+  --ion-color-light-contrast: #000000;
+  --ion-color-light-contrast-rgb: 0, 0, 0;
+  --ion-color-light-shade: #d5d5d9;
+  --ion-color-light-tint: #f3f3f8;
+
+  /* iOS 시스템 색상 */
+  --ios-blue: #007AFF;
+  --ios-green: #4CD964;
+  --ios-indigo: #5856D6;
+  --ios-orange: #FF9500;
+  --ios-pink: #FF2D55;
+  --ios-purple: #AF52DE;
+  --ios-red: #FF3B30;
+  --ios-teal: #5AC8FA;
+  --ios-yellow: #FFCC00;
+  --ios-gray: #8E8E93;
+  --ios-gray2: #AEAEB2;
+  --ios-gray3: #C7C7CC;
+  --ios-gray4: #D1D1D6;
+  --ios-gray5: #E5E5EA;
+  --ios-gray6: #F2F2F7;
+
+  /* Ionic 스타일 변수 */
+  --ion-background-color: #F2F2F7;
+  --ion-background-color-rgb: 242, 242, 247;
+  --ion-text-color: #1C1C1E;
+  --ion-text-color-rgb: 28, 28, 30;
+  --ion-border-color: #E5E5EA;
+  --ion-item-background: #FFFFFF;
+  --ion-toolbar-background: #FFFFFF;
+  --ion-toolbar-border-color: var(--ion-border-color);
+  --ion-toolbar-color: var(--ion-text-color);
+
+  /* 폰트 스타일 */
+  --ion-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+}
+
+/* iOS 모드 스타일 */
+.ios {
+  --ion-toolbar-height: 44px;
+  --ion-safe-area-top: env(safe-area-inset-top);
+  --ion-safe-area-bottom: env(safe-area-inset-bottom);
+  --ion-safe-area-left: env(safe-area-inset-left);
+  --ion-safe-area-right: env(safe-area-inset-right);
+}

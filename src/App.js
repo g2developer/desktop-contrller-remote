@@ -1,112 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import { io } from 'socket.io-client';
-import styled from 'styled-components';
-import ConnectionScreen from './components/ConnectionScreen';
-import ControlPanel from './components/ControlPanel';
-import './App.css';
+import React from 'react';
+import { Redirect, Route } from 'react-router-dom';
+import { IonApp, IonRouterOutlet } from '@ionic/react';
+import { IonReactRouter } from '@ionic/react-router';
 
-const AppContainer = styled.div`
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-`;
+// 페이지 컴포넌트
+import Login from './pages/Login';
+import Main from './pages/Main';
+import CommandScreen from './pages/CommandScreen';
+import ResponseScreen from './pages/ResponseScreen';
 
-function App() {
-  const [connected, setConnected] = useState(false);
-  const [serverAddress, setServerAddress] = useState('');
-  const [socket, setSocket] = useState(null);
-  const [error, setError] = useState(null);
-  const [screenData, setScreenData] = useState(null);
+// 인증 컨텍스트
+import { AuthProvider } from './components/AuthContext';
 
-  // 서버에 연결하는 함수
-  const connectToServer = (address) => {
-    try {
-      // 이전 연결 정리
-      if (socket) {
-        socket.disconnect();
-      }
+// 필수 CSS
+import '@ionic/react/css/core.css';
+import '@ionic/react/css/normalize.css';
+import '@ionic/react/css/structure.css';
+import '@ionic/react/css/typography.css';
+import '@ionic/react/css/padding.css';
+import '@ionic/react/css/float-elements.css';
+import '@ionic/react/css/text-alignment.css';
+import '@ionic/react/css/text-transformation.css';
+import '@ionic/react/css/flex-utils.css';
+import '@ionic/react/css/display.css';
 
-      // 주소가 http:// 또는 https://로 시작하는지 확인
-      let serverUrl = address;
-      if (!address.startsWith('http://') && !address.startsWith('https://')) {
-        serverUrl = `http://${address}`;
-      }
+// 테마 변수
+import './theme/variables.css';
 
-      // Socket.io 연결 시도
-      const newSocket = io(serverUrl);
-      setSocket(newSocket);
-      setServerAddress(serverUrl);
-      setError(null);
-
-      // 연결 이벤트 처리
-      newSocket.on('connect', () => {
-        console.log('서버에 연결됨');
-        setConnected(true);
-      });
-
-      // 연결 오류 처리
-      newSocket.on('connect_error', (err) => {
-        console.error('연결 오류:', err);
-        setError(`연결 오류: ${err.message}`);
-        setConnected(false);
-      });
-
-      // 화면 데이터 수신
-      newSocket.on('screenUpdate', (data) => {
-        setScreenData(data);
-      });
-
-      // 연결 종료 처리
-      newSocket.on('disconnect', () => {
-        console.log('서버와 연결 끊김');
-        setConnected(false);
-      });
-
-    } catch (err) {
-      console.error('연결 시도 중 오류 발생:', err);
-      setError(`연결 시도 중 오류 발생: ${err.message}`);
-    }
-  };
-
-  // 명령 전송 함수
-  const sendCommand = (command) => {
-    if (socket && connected) {
-      socket.emit('command', command);
-    }
-  };
-
-  // 컴포넌트 언마운트 시 소켓 연결 정리
-  useEffect(() => {
-    return () => {
-      if (socket) {
-        socket.disconnect();
-      }
-    };
-  }, [socket]);
-
-  return (
-    <AppContainer>
-      {!connected ? (
-        <ConnectionScreen 
-          onConnect={connectToServer} 
-          error={error} 
-        />
-      ) : (
-        <ControlPanel
-          sendCommand={sendCommand}
-          screenData={screenData}
-          onDisconnect={() => {
-            if (socket) {
-              socket.disconnect();
-            }
-            setConnected(false);
-          }}
-          serverAddress={serverAddress}
-        />
-      )}
-    </AppContainer>
-  );
-}
+const App = () => (
+  <AuthProvider>
+    <IonApp>
+      <IonReactRouter>
+        <IonRouterOutlet>
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/main" component={Main} />
+          <Route exact path="/command" component={CommandScreen} />
+          <Route exact path="/response" component={ResponseScreen} />
+          <Route exact path="/">
+            <Redirect to="/login" />
+          </Route>
+        </IonRouterOutlet>
+      </IonReactRouter>
+    </IonApp>
+  </AuthProvider>
+);
 
 export default App;

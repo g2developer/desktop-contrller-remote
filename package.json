@@ -1,0 +1,52 @@
+{
+  "name": "desktop-controller-remote",
+  "version": "1.0.0",
+  "description": "Mobile remote controller application (client)",
+  "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "dev": "react-scripts start",
+    "ionic:build": "react-scripts build",
+    "ionic:serve": "react-scripts start",
+    "android": "ionic cap add android && ionic cap copy android && ionic cap open android",
+    "ios": "ionic cap add ios && ionic cap copy ios && ionic cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/android": "^5.0.0",
+    "@capacitor/core": "^5.0.0",
+    "@capacitor/ios": "^5.0.0",
+    "@capacitor/preferences": "^5.0.0",
+    "@ionic/react": "^7.0.0",
+    "@ionic/react-router": "^7.0.0",
+    "axios": "^1.4.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router": "^5.3.4",
+    "react-router-dom": "^5.3.4",
+    "socket.io-client": "^4.6.1"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^5.0.0",
+    "@ionic/cli": "^7.0.0",
+    "cordova-res": "^0.15.4",
+    "eslint": "^8.40.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "react-scripts": "^5.0.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

@@ -1,0 +1,72 @@
+# 의존성 패키지
+/node_modules
+/packages
+
+# Node.js 종속성
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+.pnpm-debug.log
+package-lock.json
+
+# 빌드 결과물
+/build/
+/dist/
+/www/
+/.ionic/
+/.sass-cache/
+/.sourcemaps/
+/.versions/
+
+# Capacitor
+/ios/
+/android/
+
+# 테스트 커버리지
+/coverage/
+
+# 운영체제 관련 파일
+.DS_Store
+Thumbs.db
+.directory
+
+# 환경 변수 파일
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.*.local
+
+# IDE 설정
+/.idea/
+/.vscode/
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+*.iml
+*.ipr
+*.iws
+.settings/
+
+# 로그 파일
+logs
+*.log
+
+# 임시 파일
+tmp/
+temp/
+
+# 에디터 임시 파일
+*~
+*.swp
+*.swo
+*#
+
+# 기타 파일
+.cache/
+.tmp/
+.temp/
+.history/

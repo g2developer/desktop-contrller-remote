@@ -1,0 +1,7 @@
+{
+  "name": "desktop-controller-remote",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
