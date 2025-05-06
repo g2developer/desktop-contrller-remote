@@ -8,7 +8,7 @@ class SocketService {
     this.connectionStateListeners = [];
     this.reconnectInterval = null;
     this.reconnectAttempts = 0;
-    this.maxReconnectAttempts = 5;
+    this.maxReconnectAttempts = 15; // 재연결 시도 횟수 더 증가
   }
 
   connect(serverAddress) {
@@ -23,25 +23,53 @@ class SocketService {
       // 소켓 연결 설정 - 입력한 주소 그대로 사용
       console.log('소켓 연결 시도하는 서버 주소:', serverAddress);
       
-      this.socket = io(serverAddress, {
-        reconnection: true,
-        reconnectionAttempts: 5,
-        reconnectionDelay: 1000,
-        reconnectionDelayMax: 5000,
-        timeout: 10000,
-        // 매우 중요: 처음부터 polling을 취소하고 websocket만 사용하도록 변경
-        // 일부 네트워크 상황에서는 'polling'을 추가하면 더 안정적일 수 있음
-        transports: ['websocket']
-      });
+      try {
+        // 테스트용 소켓 설정 출력
+        console.log('소켓 설정: 모든 전송 방식 활성화');
+        
+        // Socket.IO 기본 URL 경로를 사용하며, 양쪽 전송 옵션을 모두 활성화
+        this.socket = io(serverAddress, {
+          reconnection: true,
+          reconnectionAttempts: 10,
+          reconnectionDelay: 1000,
+          reconnectionDelayMax: 5000,
+          timeout: 60000, // 타임아웃 값 60초(1분)로 증가
+          transports: ['polling', 'websocket'], // polling을 먼저 시도하고 websocket으로 업그레이드
+          upgrade: true,
+          forceNew: true,
+          autoConnect: true,
+          extraHeaders: {  // 추가 헤더 설정(캩0시 방지)
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          }
+        });
+      } catch (e) {
+        console.error('소켓 오브젝트 생성 중 오류:', e);
+        throw e;
+      }
 
       // 연결 이벤트
       this.socket.on('connect', () => {
-        console.log('Socket connected successfully');
+        console.log('Socket connected successfully! Socket ID:', this.socket.id);
         this.updateConnectionState('connected');
         this.reconnectAttempts = 0;
         if (this.reconnectInterval) {
           clearInterval(this.reconnectInterval);
           this.reconnectInterval = null;
+        }
+        
+        // 연결 후 자동으로 클라이언트 정보 전송
+        try {
+          console.log('클라이언트 정보 자동 전송...');
+          this.socket.emit('client-info', {
+            device: navigator.userAgent || '알 수 없음',
+            type: 'mobile',
+            platform: navigator.platform || '알 수 없음',
+            timestamp: new Date().toISOString()
+          });
+        } catch (error) {
+          console.error('클라이언트 정보 전송 중 오류:', error);
         }
       });
 
@@ -103,12 +131,15 @@ class SocketService {
     // 이미 재연결 시도 중이라면 추가로 실행하지 않음
     if (this.reconnectInterval) return;
 
+    console.log('재연결 시도 시작...');
+    this.updateConnectionState('reconnecting');
+    
     this.reconnectInterval = setInterval(() => {
       this.reconnectAttempts++;
-      console.log(`Attempting to reconnect (${this.reconnectAttempts}/${this.maxReconnectAttempts})...`);
+      console.log(`재연결 시도 중 (${this.reconnectAttempts}/${this.maxReconnectAttempts})...`);
       
       if (this.reconnectAttempts > this.maxReconnectAttempts) {
-        console.log('Max reconnection attempts reached');
+        console.log('최대 재연결 시도 횟수 도달');
         clearInterval(this.reconnectInterval);
         this.reconnectInterval = null;
         this.updateConnectionState('failed');
@@ -117,12 +148,24 @@ class SocketService {
       
       if (this.socket) {
         try {
+          console.log('소켓 재연결 시도...', this.socket.io?.uri || '알 수 없음');
           this.socket.connect();
+          
+          // 연결 상태 확인
+          setTimeout(() => {
+            if (this.socket && this.socket.connected) {
+              console.log('재연결 성공!');
+              clearInterval(this.reconnectInterval);
+              this.reconnectInterval = null;
+              this.reconnectAttempts = 0;
+              this.updateConnectionState('connected');
+            }
+          }, 1000);
         } catch (error) {
-          console.error('Error during reconnect attempt:', error);
+          console.error('재연결 시도 중 오류:', error);
         }
       }
-    }, 5000); // 5초마다 재연결 시도
+    }, 3000); // 3초마다 재연결 시도(주기 단축)
   }
 
   on(event, callback) {
@@ -169,20 +212,38 @@ class SocketService {
   }
 
   emit(event, data, callback) {
-    if (!this.socket || !this.isConnected()) {
-      console.warn('Socket not connected. Cannot emit event:', event);
+    if (!this.socket) {
+      console.warn('소켓이 없습니다. 이벤트를 발생할 수 없습니다:', event);
+      return false;
+    }
+
+    if (!this.isConnected()) {
+      console.warn('소켓이 연결되지 않았습니다. 이벤트를 발생할 수 없습니다:', event);
+      // 연결되지 않은 상태에서 자동 재연결 시도
+      if (event === 'login') {
+        console.log('로그인 이벤트 발생 시도 중 연결되지 않음, 재연결 시도 중...');
+        setTimeout(() => this.attemptReconnect(), 500);
+      }
       return false;
     }
 
     try {
+      console.log(`이벤트 발생: ${event}`, {
+        hasCallback: !!callback, 
+        data: event === 'login' ? { id: data.id, hasPassword: !!data.password } : data 
+      });
+      
       if (callback) {
-        this.socket.emit(event, data, callback);
+        this.socket.emit(event, data, (response) => {
+          console.log(`이벤트 ${event} 응답 받음:`, response);
+          callback(response);
+        });
       } else {
         this.socket.emit(event, data);
       }
       return true;
     } catch (error) {
-      console.error(`Error emitting event ${event}:`, error);
+      console.error(`이벤트 ${event} 발생 중 오류:`, error);
       return false;
     }
   }
@@ -246,9 +307,22 @@ class SocketService {
     return this.connectionState;
   }
 
-  // 연결 여부 확인
+  // 연결 여부 확인 - 더 안정적인 방법으로 개선
   isConnected() {
-    return this.socket && this.socket.connected;
+    try {
+      if (!this.socket) {
+        console.log('연결 확인: 소켓 객체가 없습니다');
+        return false;
+      }
+      
+      // connected 상태를 직접 확인
+      const isActive = this.socket.connected;
+      console.log(`연결 확인: ${isActive ? '연결됨' : '연결되지 않음'} (socket.id: ${this.socket.id || '없음'})`);
+      return isActive;
+    } catch (error) {
+      console.error('연결 상태 확인 오류:', error);
+      return false;
+    }
   }
 }
 

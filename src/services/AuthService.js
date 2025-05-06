@@ -24,37 +24,82 @@ class AuthService {
    * @returns {Promise<Object>} 로그인 결과
    */
   async login(serverAddress, username, password) {
+    console.log(`로그인 시도 - 서버: ${serverAddress}, 사용자: ${username}`);
     try {
       // 먼저 서버 주소 포맷 확인 및 수정
-      // Socket.IO는 자체적으로 ws:// 프로토콜을 사용하므로 http:// 프리픽스 추가하지 않음
-      // 대신 서버 주소에 http:// 또는 https:// 프리픽스가 있으면 제거
-      if (serverAddress.startsWith('http://')) {
-        serverAddress = serverAddress.replace('http://', '');
-      } else if (serverAddress.startsWith('https://')) {
-        serverAddress = serverAddress.replace('https://', '');
+      // IP:포트 형식이 아니면 오류 발생
+      if (!serverAddress.includes(':')) {
+        return { 
+          success: false, 
+          message: '서버 주소는 IP:포트 형식으로 입력해주세요. (예: 192.168.0.2:6000)' 
+        };
+      }
+
+      // 프로토콜 처리
+      // - Socket.IO는 프로토콜 없이 연결 시도 시 자동으로 ws:// 프로토콜 사용
+      // - http:// 또는 https:// 프리픽스가 있으면 제거
+      let processedAddress = serverAddress;
+      if (processedAddress.startsWith('http://')) {
+        processedAddress = processedAddress.replace('http://', '');
+      } else if (processedAddress.startsWith('https://')) {
+        processedAddress = processedAddress.replace('https://', '');
+      } else if (processedAddress.startsWith('ws://')) {
+        processedAddress = processedAddress.replace('ws://', '');
+      } else if (processedAddress.startsWith('wss://')) {
+        processedAddress = processedAddress.replace('wss://', '');
       }
       
-      // 프로토콜 없이 IP:포트 형식으로 사용
-      console.log('연결 시도할 서버 주소:', serverAddress);
+      // 특수 문자 제거 및 IP:포트 형식으로 정리
+      processedAddress = processedAddress.trim();
+      
+      console.log('전처리 후 서버 주소:', processedAddress);
+      console.log('연결 시도할 주소:', processedAddress);
 
-      // 소켓 연결
-      const connected = socketService.connect(serverAddress);
+      // 소켓 연결 시도
+      console.log(`소켓 연결 시도: ${processedAddress}`);
+      const connected = socketService.connect(processedAddress);
       if (!connected) {
-        return { success: false, message: '서버에 연결할 수 없습니다.' };
+        console.error(`서버 연결 실패: ${processedAddress}`);
+        return { success: false, message: `서버에 연결할 수 없습니다: ${processedAddress}` };
       }
+      
+      // 연결 확인을 위해 소켓 상태 체크
+      let connectionCheckAttempts = 0;
+      while (!socketService.isConnected() && connectionCheckAttempts < 10) {
+        console.log(`연결 상태 확인 중... 시도 ${connectionCheckAttempts + 1}/10`);
+        await new Promise(resolve => setTimeout(resolve, 500));
+        connectionCheckAttempts++;
+      }
+      
+      if (!socketService.isConnected()) {
+        console.error('소켓 연결 실패: 연결 상태 확인 시간 초과');
+        return { success: false, message: `서버 연결은 성공했으나 연결 상태 확인에 실패했습니다: ${processedAddress}` };
+      }
+      
+      console.log('소켓 연결 성공, 인증 요청 준비 중...');
+      
+      // 서버 연결 후 로그인 전 초기화 대기 시간 증가
+      console.log('서버 연결 후 로그인 전 대기 중...');
+      await new Promise(resolve => setTimeout(resolve, 2000)); // 2초 대기로 증가
 
       // 인증 요청 (promise로 변환)
       return new Promise((resolve) => {
         // 요청 타임아웃을 위한 타이머
         const timeoutId = setTimeout(() => {
+          console.log('인증 요청 타임아웃 발생');
           if (!this.isAuthenticated) {
             socketService.disconnect();
-            resolve({ success: false, message: '인증 요청 시간이 초과되었습니다.' });
+            resolve({ success: false, message: '인증 요청 시간이 초과되었습니다. 네트워크 상태와 서버 실행 여부를 확인해주세요.' });
           }
-        }, 10000); // 10초 타임아웃
+        }, 45000); // 45초로 타임아웃 더 증가
 
+        // 인증 요청 전 로그 추가
+        console.log(`로그인 요청 전송: ${username}`);
+        
         // 인증 요청 - 서버에서 'login' 이벤트를 사용하므로 변경
         socketService.emit('login', { id: username, password }, async (response) => {
+          console.log('로그인 응답 수신:', response ? `success=${response.success}` : '응답 없음');
+          console.log('로그인 응답 수신:', response);
           // 타임아웃 타이머 해제
           clearTimeout(timeoutId);
           
