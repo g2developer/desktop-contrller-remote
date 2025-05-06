@@ -1,31 +1,117 @@
 .connection-status {
   display: flex;
   align-items: center;
-  padding: 10px 16px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  margin-bottom: 16px;
+  padding: 8px 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  background-color: rgba(240, 240, 240, 0.9);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .status-indicator {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   margin-right: 8px;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
+/* 연결 상태에 따른 스타일 */
+.connection-status.connected {
+  color: #10b981;
+  background-color: rgba(209, 250, 229, 0.8);
+}
+
+.connection-status.disconnected {
+  color: #ef4444;
+  background-color: rgba(254, 226, 226, 0.8);
+}
+
+.connection-status.checking {
+  color: #f59e0b;
+  background-color: rgba(254, 243, 199, 0.8);
+}
+
+.connection-status.error {
+  color: #ef4444;
+  background-color: rgba(254, 226, 226, 0.8);
+}
+
+/* 상태 표시 아이콘 스타일 */
 .status-indicator.connected {
-  background-color: #4CD964; /* iOS 성공 색상 */
-  box-shadow: 0 0 5px rgba(76, 217, 100, 0.5);
+  background-color: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3), 0 0 8px rgba(16, 185, 129, 0.6);
+  animation: pulse-green 2s ease-in-out infinite;
 }
 
 .status-indicator.disconnected {
-  background-color: #FF3B30; /* iOS 오류 색상 */
-  box-shadow: 0 0 5px rgba(255, 59, 48, 0.5);
+  background-color: #ef4444;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3);
 }
 
-.connection-status span {
-  font-size: 14px;
-  color: #1C1C1E;
+.status-indicator.checking {
+  background-color: #f59e0b;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.3);
+  animation: pulse-orange 2s ease-in-out infinite;
+}
+
+.status-indicator.error {
+  background-color: #ef4444;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3);
+  animation: pulse-error 1s ease-in-out infinite;
+}
+
+/* 펄스 애니메이션 */
+@keyframes pulse-green {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+@keyframes pulse-orange {
+  0% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(245, 158, 11, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+  }
+}
+
+@keyframes pulse-error {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+/* 반응형 스타일 */
+@media (max-width: 480px) {
+  .connection-status {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+  
+  .status-indicator {
+    width: 10px;
+    height: 10px;
+    margin-right: 6px;
+  }
 }

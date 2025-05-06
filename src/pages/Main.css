@@ -167,6 +167,46 @@ ion-content {
   height: 100%;
 }
 
+/* AI 응답 이미지 */
+.ai-response-image {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow: auto;
+  background-color: #F2F2F7;
+  position: relative;
+}
+
+.ai-response-image img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+/* 이미지 확대/축소 컨트롤 */
+.zoom-controls {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  gap: 8px;
+  z-index: 20;
+}
+
+.zoom-controls ion-button {
+  --padding-start: 10px;
+  --padding-end: 10px;
+  --padding-top: 5px;
+  --padding-bottom: 5px;
+  --border-radius: 8px;
+  --background: rgba(0, 0, 0, 0.6);
+  --color: white;
+}
+
 /* 버튼 영역 */
 .response-controls-overlay {
   position: absolute;
@@ -461,4 +501,121 @@ ion-footer {
   font-size: 15px;
   color: #1C1C1E;
   line-height: 1.4;
+}
+
+/* 빈 명령 이력 상태 */
+.empty-history {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: #8E8E93;
+  text-align: center;
+  background-color: white;
+  margin: 16px 0;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 오류 상태 표시 */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  background-color: white;
+  border-radius: 10px;
+  margin: 16px 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.error-icon {
+  font-size: 48px;
+  color: #FF3B30;
+  margin-bottom: 16px;
+}
+
+.error-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1C1C1E;
+  margin-bottom: 8px;
+}
+
+.error-message {
+  font-size: 15px;
+  color: #8E8E93;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+.retry-button {
+  --color: white;
+  --background: #007AFF;
+  --border-radius: 20px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  font-weight: 500;
+}
+
+/* 서버 연결 상태에 따른 명령 입력창 스타일 */
+.command-textarea.disabled {
+  --opacity: 0.5;
+}
+
+/* 이미지 확대/축소 컨트롤 */
+.zoom-controls {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  gap: 8px;
+  z-index: 20;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 20px;
+  padding: 5px;
+}
+
+/* 이미지 없을 때 표시되는 에러 메시지 */
+.image-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 20px;
+  text-align: center;
+  color: #8E8E93;
+}
+
+.image-error-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  color: #FF3B30;
+}
+
+.image-error-message {
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 480px) {
+  .test-title {
+    font-size: 24px;
+  }
+  
+  .test-description {
+    font-size: 14px;
+  }
+  
+  .response-section {
+    height: calc(100vh - 200px);
+  }
+  
+  .last-command-container {
+    padding: 10px 14px;
+  }
 }
