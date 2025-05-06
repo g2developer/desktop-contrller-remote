@@ -21,12 +21,17 @@ class SocketService {
       console.log('Connecting to socket server:', serverAddress);
       
       // 소켓 연결 설정 - 입력한 주소 그대로 사용
+      console.log('소켓 연결 시도하는 서버 주소:', serverAddress);
+      
       this.socket = io(serverAddress, {
         reconnection: true,
+        reconnectionAttempts: 5,
         reconnectionDelay: 1000,
         reconnectionDelayMax: 5000,
         timeout: 10000,
-        transports: ['websocket', 'polling']
+        // 매우 중요: 처음부터 polling을 취소하고 websocket만 사용하도록 변경
+        // 일부 네트워크 상황에서는 'polling'을 추가하면 더 안정적일 수 있음
+        transports: ['websocket']
       });
 
       // 연결 이벤트

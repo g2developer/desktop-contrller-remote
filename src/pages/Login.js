@@ -104,28 +104,80 @@ const Login = () => {
       return;
     }
 
+    // 포트 번호 포함 확인
+    if (!serverAddress.includes(':')) {
+      setAlertMessage('서버 주소는 IP:포트 형식으로 입력해주세요. (예: 192.168.0.2:6000)');
+      setShowAlert(true);
+      addDebugInfo('서버 주소에 포트가 지정되지 않음');
+      return;
+    }
+
     // 로딩 표시
     setShowLoading(true);
     addDebugInfo(`로그인 시도: ${serverAddress}`);
     
+    // 서버 연결 가능 여부 첫 테스트
     try {
+      const [ip, port] = serverAddress.split(':');
+      addDebugInfo(`서버 연결 테스트: ${ip}, 포트: ${port}`);
+      
       // 입력 정보 로컬에 저장 (비밀번호는 저장하지 않음)
       await Preferences.set({ key: 'last_server_address', value: serverAddress });
       await Preferences.set({ key: 'last_username', value: username });
+      
+      // 서버 상태 확인 시도 - fetch는 일반적으로 소켓보다 연결 테스트에 더 적합
+      // 네트워크 오류를 빠르게 검출하기 위해 짧은 타임아웃 설정
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3000);
+      
+      try {
+        const statusResponse = await fetch(`http://${serverAddress}/status`, {
+          signal: controller.signal
+        }).then(res => res.json());
+        
+        clearTimeout(timeoutId);
+        addDebugInfo(`서버 상태 확인 성공: ${JSON.stringify(statusResponse)}`);
+      } catch (statusError) {
+        clearTimeout(timeoutId);
+        // 서버 상태 확인 실패에 대한 로그만 추가, 이것은 오류적인 상황은 아님
+        addDebugInfo(`서버 상태 확인 실패(Socket.IO로 진행): ${statusError.message}`);
+      }
       
       // 로그인 시도
       const result = await login(serverAddress, username, password);
       addDebugInfo(`로그인 결과: ${result.success ? '성공' : '실패'}`);
       
       if (!result.success) {
-        setAlertMessage(result.message || '로그인에 실패했습니다.');
+        let errorMsg = result.message || '로그인에 실패했습니다.';
+        
+        // WebSocket 오류 발생 시 더 해석적인 오류 메시지 제공
+        if (result.message?.includes('서버에 연결할 수 없습니다')) {
+          errorMsg = `서버 연결 오류: ${serverAddress} 연결을 실패했습니다. \n\n
+          1. 데스크톱 서버가 실행 중인지 확인하세요.\n
+          2. 클라이언트와 서버가 같은 네트워크에 있는지 확인하세요.\n
+          3. 포트 번호(6000)가 방화벽에서 허용되었는지 확인하세요.`;
+        }
+        
+        setAlertMessage(errorMsg);
         setShowAlert(true);
         addDebugInfo(`실패 이유: ${result.message || '알 수 없음'}`);
       }
       // 성공 시 AuthContext에서 자동으로 /main으로 리다이렉트
     } catch (error) {
       console.error('Login error:', error);
-      setAlertMessage('로그인 중 오류가 발생했습니다.');
+      
+      // 네트워크 오류에 대한 더 적합한 오류 메시지 제공
+      let errorMessage = '로그인 중 오류가 발생했습니다.';
+      
+      if (error.message && error.message.includes('NetworkError')) {
+        errorMessage = `네트워크 오류: ${serverAddress}에 연결할 수 없습니다. IP 주소와 포트가 올바른지 확인하세요.`;
+      } else if (error.message && error.message.includes('timeout')) {
+        errorMessage = `연결 시간 초과: ${serverAddress}에 연결하는 중 시간이 초과되었습니다. 네트워크를 확인하세요.`;
+      } else if (error.message && error.message.includes('WebSocket')) {
+        errorMessage = `WebSocket 오류: ${serverAddress}에 연결할 수 없습니다. 서버가 실행 중인지, 포트가 열려 있는지 확인하세요.`;
+      }
+      
+      setAlertMessage(errorMessage);
       setShowAlert(true);
       addDebugInfo(`로그인 오류: ${error.message}`);
     } finally {

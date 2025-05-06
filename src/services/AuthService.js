@@ -26,9 +26,16 @@ class AuthService {
   async login(serverAddress, username, password) {
     try {
       // 먼저 서버 주소 포맷 확인 및 수정
-      if (!serverAddress.startsWith('http://') && !serverAddress.startsWith('https://')) {
-        serverAddress = `http://${serverAddress}`;
+      // Socket.IO는 자체적으로 ws:// 프로토콜을 사용하므로 http:// 프리픽스 추가하지 않음
+      // 대신 서버 주소에 http:// 또는 https:// 프리픽스가 있으면 제거
+      if (serverAddress.startsWith('http://')) {
+        serverAddress = serverAddress.replace('http://', '');
+      } else if (serverAddress.startsWith('https://')) {
+        serverAddress = serverAddress.replace('https://', '');
       }
+      
+      // 프로토콜 없이 IP:포트 형식으로 사용
+      console.log('연결 시도할 서버 주소:', serverAddress);
 
       // 소켓 연결
       const connected = socketService.connect(serverAddress);
