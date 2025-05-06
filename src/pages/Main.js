@@ -26,10 +26,17 @@ import {
   closeCircle,
   menu,
   arrowBack,
-  time
+  time,
+  chatboxEllipses,
+  pulseOutline,
+  brain
 } from 'ionicons/icons';
 import { useAuth } from '../components/AuthContext';
 import ConnectionStatus from '../components/ConnectionStatus';
+import AILogo from '../components/AILogo';
+import DesktopLogo from '../components/DesktopLogo';
+import RemoteDesktopLogo from '../components/RemoteDesktopLogo';
+import ModernRemoteDesktopLogo from '../components/ModernRemoteDesktopLogo';
 import './Main.css';
 
 const Main = () => {
@@ -264,17 +271,127 @@ const Main = () => {
                       <IonIcon icon={refreshOutline} />
                     </IonButton>
                   </div>
-                  <div className="response-time-overlay">
+                  <div className="response-time-overlay" style={{
+                    position: 'absolute',
+                    top: '15px',
+                    left: '15px',
+                    padding: '8px 14px',
+                    borderRadius: '30px',
+                    backgroundColor: 'rgba(59, 130, 246, 0.15)',
+                    backdropFilter: 'blur(5px)',
+                    WebkitBackdropFilter: 'blur(5px)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    color: '#93C5FD',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    boxShadow: '0 0 15px rgba(59, 130, 246, 0.15)',
+                    zIndex: 10
+                  }}>
+                    <ModernRemoteDesktopLogo 
+                      width={18} 
+                      height={18} 
+                      primaryColor="#93C5FD" 
+                      secondaryColor="#60A5FA" 
+                      accentColor="#93C5FD"
+                    />
                     <span>{new Date(response.timestamp).toLocaleString()}</span>
                   </div>
-                  {/* 테스트용 더미 이미지 */}
-                  <div className="test-image">
-                    <div className="test-content">
-                      <h3>AI 응답 내용</h3>
-                      <p>이 영역에는 실제 AI의 응답 화면이 표시됩니다. 현재는 테스트 모드이므로 샘플 메시지만 표시합니다.</p>
-                      <p>응답 시간: {new Date(response.timestamp).toLocaleTimeString()}</p>
-                      <p>사용자: {username}</p>
-                      <p>테스트 데이터입니다. 실제 사용 시에는 이 부분에 AI 응답 이미지가 표시됩니다.</p>
+                  <div className="test-image" style={{
+                    width: '100%',
+                    height: '100%',
+                    background: 'linear-gradient(135deg, #334155, #475569)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    color: '#fff',
+                    padding: '25px',
+                    borderRadius: '16px',
+                    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.12)',
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}>
+                    {/* 원격 제어 문양 배경 효과 */}
+                    <div style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        opacity: 0.06,
+                        background: `
+                            radial-gradient(circle at 15% 50%, #60A5FA 0%, transparent 25%),
+                            radial-gradient(circle at 85% 30%, #3B82F6 0%, transparent 20%),
+                            linear-gradient(0deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px)
+                        `,
+                        backgroundSize: '100% 100%, 100% 100%, 20px 20px, 20px 20px',
+                        zIndex: 0
+                    }}></div>
+                    <div style={{
+                        position: 'absolute',
+                        top: '15px',
+                        right: '15px',
+                        width: '12px',
+                        height: '12px',
+                        borderRadius: '50%',
+                        background: '#22C55E',
+                        boxShadow: '0 0 10px rgba(34, 197, 94, 0.5)',
+                        zIndex: 1
+                    }}></div>
+                    <ModernRemoteDesktopLogo 
+                      width={180} 
+                      height={180} 
+                      primaryColor="#60A5FA" 
+                      secondaryColor="#3B82F6"
+                      accentColor="#93C5FD"
+                      style={{
+                        marginBottom: '30px',
+                        filter: 'drop-shadow(0 0 25px rgba(96, 165, 250, 0.3))',
+                        zIndex: 2
+                      }}
+                    />
+                    <h3 style={{ 
+                      margin: '0 0 15px 0', 
+                      fontSize: '30px', 
+                      color: '#93C5FD',
+                      fontWeight: '700',
+                      letterSpacing: '-0.5px'
+                    }}>AI 응답 내용</h3>
+                    <p style={{ 
+                      margin: '0 0 15px 0', 
+                      textAlign: 'center', 
+                      color: '#E2E8F0',
+                      fontSize: '16px',
+                      maxWidth: '80%',
+                      lineHeight: '1.5'
+                    }}>이 영역에는 실제 AI의 응답 화면이 표시됩니다.</p>
+                    <p style={{ 
+                      margin: '0 0 15px 0', 
+                      color: '#BAE6FD',
+                      fontSize: '16px',
+                      fontWeight: '500' 
+                    }}>사용자: {username}</p>
+                    <div style={{
+                      marginTop: '25px',
+                      padding: '10px 18px',
+                      borderRadius: '30px',
+                      backgroundColor: 'rgba(59, 130, 246, 0.15)',
+                      fontSize: '14px',
+                      color: '#93C5FD',
+                      fontWeight: '500',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      boxShadow: '0 0 20px rgba(59, 130, 246, 0.15)'
+                    }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#93C5FD" strokeWidth="1.5" />
+                        <path d="M12 6V12L16 14" stroke="#93C5FD" strokeWidth="1.5" strokeLinecap="round" />
+                      </svg>
+                      <span>응답 시간: {new Date(response.timestamp).toLocaleTimeString()}</span>
                     </div>
                   </div>
                 </div>
