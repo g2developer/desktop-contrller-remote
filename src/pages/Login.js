@@ -135,7 +135,7 @@ const Login = () => {
 
   // 서버 주소 입력 필드에 포커스가 있을 때 도움말 표시
   const handleServerAddressFocus = () => {
-    setPortMessage('서버 주소는 IP:포트번호 형식으로 입력해주세요. (예: 192.168.0.1:3000)');
+    setPortMessage('서버 주소는 IP:포트번호 형식으로 입력해주세요. (예: 192.168.0.1:6000)');
   };
 
   // 서버 주소 입력 필드에서 포커스가 사라질 때 도움말 제거
@@ -166,7 +166,7 @@ const Login = () => {
                       type="text"
                       value={serverAddress}
                       onIonChange={e => setServerAddress(e.detail.value)}
-                      placeholder="예: 192.168.0.1:3000"
+                      placeholder="예: 192.168.0.1:6000"
                       onIonFocus={handleServerAddressFocus}
                       onIonBlur={handleServerAddressBlur}
                     />
@@ -264,7 +264,7 @@ const Login = () => {
                 <h4>디버깅 정보</h4>
               </IonText>
               <div className="server-info">
-                <p><strong>중요:</strong> 웹소켓 오류 "ws://192.168.0.2:6000/socket.io/?EIO=4&transport=websocket"가 발생하면, 서버가 실행 중인지 확인하고 올바른 포트 번호를 사용하세요.</p>
+                <p><strong>중요:</strong> 웹소켓 오류 "ws://192.168.0.2:6000/socket.io/?EIO=4&transport=websocket"가 발생하면, 서버가 실행 중인지 확인하고 포트 번호(기본: 6000)가 올바른지 확인하세요.</p>
               </div>
               <IonList className="debug-list">
                 {debugInfo.length === 0 ? (
