@@ -6,8 +6,6 @@ import { IonReactRouter } from '@ionic/react-router';
 // 페이지 컴포넌트
 import Login from './pages/Login';
 import Main from './pages/Main';
-import CommandScreen from './pages/CommandScreen';
-import ResponseScreen from './pages/ResponseScreen';
 
 // 인증 컨텍스트
 import { AuthProvider } from './components/AuthContext';
@@ -34,8 +32,6 @@ const App = () => (
         <IonRouterOutlet>
           <Route exact path="/login" component={Login} />
           <Route exact path="/main" component={Main} />
-          <Route exact path="/command" component={CommandScreen} />
-          <Route exact path="/response" component={ResponseScreen} />
           <Route exact path="/">
             <Redirect to="/login" />
           </Route>

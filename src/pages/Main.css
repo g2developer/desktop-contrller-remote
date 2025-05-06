@@ -1,126 +1,378 @@
-.main-content {
+.content-container {
+  position: relative;
+  height: 100%;
+  padding-bottom: 0;
+}ion-content {
+  --overflow: auto;
+  --padding-bottom: 10px;
+}.main-content {
   --background: #F2F2F7; /* iOS 배경색 */
-}
-
-.welcome-container {
-  text-align: center;
-  margin-bottom: 24px;
-  padding: 24px 16px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
-
-.app-icon.main-icon {
-  width: 60px;
-  height: 60px;
-  margin: 0 auto;
-  background-color: #007AFF; /* iOS 메인 색상 */
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 16px;
-  box-shadow: 0 4px 10px rgba(0, 122, 255, 0.3);
-}
-
-.app-icon.main-icon ion-icon {
-  font-size: 30px;
-  color: white;
-}
-
-.welcome-container h2 {
-  font-size: 22px;
-  font-weight: 700;
-  color: #1C1C1E;
-  margin: 0 0 10px 0;
-}
-
-.welcome-container p {
-  font-size: 16px;
-  color: #8E8E93;
-  margin: 0;
-  line-height: 1.4;
-}
-
-.action-cards {
+  position: relative;
+  padding-bottom: 0;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  height: 100%;
+  overflow: hidden;
 }
 
-.card {
+/* 마지막 명령어 표시 영역 */
+.last-command-container {
   background-color: white;
   border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: transform 0.2s;
 }
 
-.card:active {
-  transform: scale(0.98);
+.last-command-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #8E8E93;
+  margin-bottom: 4px;
 }
 
-.card-content {
+.last-command-text {
+  font-size: 14px;
+  color: #1C1C1E;
+  line-height: 1.4;
+  position: relative;
+  white-space: pre-line;
+  /* 최대 2줄까지만 표시 */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  padding-right: 24px;
+}
+
+.expand-text {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  font-size: 13px;
+  color: #007AFF;
+}
+
+/* 응답 섹션 */
+.response-section {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: calc(100vh - 150px); /* 화면 전체 높이에서 헤더와 입력창 높이를 빼준 수치 */
+  margin-bottom: 0;
+}
+
+.refresh-status {
   display: flex;
   align-items: center;
-  padding: 16px;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background-color: white;
+  margin-bottom: 16px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
-.card-icon {
-  width: 46px;
-  height: 46px;
-  border-radius: 12px;
+.refresh-status span {
+  font-size: 14px;
+  color: #8E8E93;
+}
+
+.refresh-status span.active-status {
+  color: #007AFF;
+}
+
+.response-controls {
   display: flex;
+  align-items: center;
+}
+
+.response-controls ion-button {
+  margin-left: 5px;
+  --padding-start: 8px;
+  --padding-end: 8px;
+}
+
+.active-button {
+  --color: #007AFF;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-right: 16px;
+  height: 300px;
+  background-color: white;
+  border-radius: 10px;
+  margin: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  padding: 20px;
 }
 
-.command-card .card-icon {
-  background-color: #5AC8FA; /* iOS 밝은 파란색 */
+.loading-container ion-spinner {
+  margin-bottom: 16px;
 }
 
-.response-card .card-icon {
-  background-color: #FFCC00; /* iOS 노란색 */
+.loading-container p {
+  color: #8E8E93;
+  margin: 4px 0;
+  font-size: 15px;
 }
 
-.card-icon ion-icon {
-  font-size: 24px;
-  color: white;
-}
-
-.card-info {
+.response-container {
+  background-color: white;
+  border-radius: 10px;
+  padding: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
 }
 
-.card-info h3 {
+.response-time {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #E5E5EA;
+}
+
+.response-time ion-icon {
+  font-size: 16px;
+  color: #8E8E93;
+  margin-right: 6px;
+}
+
+.response-time span {
+  font-size: 14px;
+  color: #8E8E93;
+}
+
+.response-image-container {
+  flex: 1;
+  position: relative;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 6px;
+  background-color: white;
+  height: 100%;
+}
+
+/* 버튼 영역 */
+.response-controls-overlay {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.response-controls-overlay ion-button {
+  --color: #007AFF;
+  --padding-start: 8px;
+  --padding-end: 8px;
+  margin-left: 2px;
+}
+
+.response-controls-overlay .active-button {
+  --color: #34C759;
+}
+
+/* 날짜/시간 영역 */
+.response-time-overlay {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: #8E8E93;
+}
+
+/* 테스트용 이미지 스타일 */
+.test-image {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  background-color: white;
+}
+
+.test-content {
+  padding: 0;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
+
+.test-content h3 {
+  color: #007AFF;
+  margin-bottom: 16px;
+}
+
+.test-content p {
+  color: #1C1C1E;
+  margin-bottom: 10px;
+  line-height: 1.4;
+  font-size: 14px;
+}
+
+/* 명령어 입력 영역 - 하단 고정 */
+ion-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  --background: white;
+  border-top: 1px solid #E5E5EA;
+  padding: 8px 16px 8px 16px;
+  z-index: 100;
+  min-height: 60px; /* 최소 높이 설정 */
+  height: auto; /* 높이 자동 조정 */
+  max-height: 150px; /* 최대 높이 제한 수정 */
+  overflow-y: auto; /* 너무 클 경우 스크롤 허용 */
+}
+
+.command-form {
+  width: 100%;
+}
+
+.textarea-container {
+  display: flex;
+  align-items: flex-start; /* 위쪽으로 정렬하여 아래에서 위로 확장되도록 설정 */
+  width: 100%;
+}
+
+.command-textarea {
+  --background: #F2F2F7;
+  --border-radius: 18px;
+  --border-color: transparent;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+  flex: 1;
+  font-size: 15px;
+  min-height: 40px;
+  max-height: 130px;
+  border-radius: 18px;
+}
+
+.send-button {
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --border-radius: 50%;
+  margin-left: 8px;
+  height: 40px;
+  width: 40px;
+  --box-shadow: none;
+  align-self: flex-end;
+}
+
+/* 명령어 모달 */
+.command-modal {
+  --height: auto;
+  --width: 90%;
+  --max-width: 400px;
+  --border-radius: 16px;
+  --box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 16px 0 16px;
+  border-bottom: 1px solid #E5E5EA;
+}
+
+.modal-header h3 {
+  margin: 0;
   font-size: 17px;
   font-weight: 600;
   color: #1C1C1E;
-  margin: 0 0 4px 0;
 }
 
-.card-info p {
-  font-size: 14px;
-  color: #8E8E93;
+.modal-content {
+  padding: 16px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.full-command {
+  font-size: 15px;
+  line-height: 1.5;
+  color: #1C1C1E;
+  white-space: pre-line;
   margin: 0;
 }
 
-.last-command-time {
-  font-size: 12px;
-  color: #8E8E93;
-  margin-top: 8px;
+/* 이력 모달 */
+.history-modal {
+  --height: 100%;
+  --width: 100%;
+}
+
+.history-modal-content {
+  --background: #F2F2F7;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.history-item {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  background-color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.history-item:active {
+  background-color: #E5E5EA;
+}
+
+.history-item-header {
   display: flex;
   align-items: center;
+  margin-bottom: 8px;
 }
 
-.card-arrow {
-  margin-left: 12px;
-}
-
-.card-arrow ion-icon {
-  font-size: 18px;
+.history-icon {
+  font-size: 16px;
   color: #8E8E93;
+  margin-right: 6px;
+}
+
+.history-time {
+  font-size: 13px;
+  color: #8E8E93;
+}
+
+.history-text {
+  font-size: 15px;
+  color: #1C1C1E;
+  line-height: 1.4;
 }
