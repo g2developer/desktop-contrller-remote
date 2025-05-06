@@ -223,11 +223,11 @@ const Main = () => {
         </IonToolbar>
       </IonHeader>
       
-      <IonContent className="ion-padding main-content content-container" scrollEvents={true} fullscreen={true}>
+      <IonContent className="ion-padding main-content content-container" scrollEvents={false} fullscreen={true}>
         <ConnectionStatus />
         
         {/* 최근 명령어 표시 - 명령 입력창 위까지 크기 조정 */}
-        <div style={{ paddingBottom: '60px' }}>
+        <div>
           {lastCommand && (
             <div className="last-command-container" onClick={() => setShowFullCommand(true)}>
               <div className="last-command-label">마지막 명령:</div>
@@ -241,7 +241,7 @@ const Main = () => {
           )}
           
           {/* AI 응답 섹션 */}
-          <div className="response-section">
+          <div className="response-section" style={{ height: 'calc(100vh - 230px)', overflow: 'hidden' }}>
           
             <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
               <IonRefresherContent></IonRefresherContent>

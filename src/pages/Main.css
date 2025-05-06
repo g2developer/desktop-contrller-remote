@@ -266,6 +266,7 @@ ion-footer {
   min-height: 40px;
   max-height: 130px;
   border-radius: 18px;
+  overflow-y: auto;
 }
 
 .send-button {
